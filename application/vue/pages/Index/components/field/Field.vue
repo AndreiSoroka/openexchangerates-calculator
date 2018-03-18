@@ -15,7 +15,9 @@
       </div>
       <div class="input-group-append">
         <button
-          class="btn btn-outline-secondary">Select
+          :class="{'btn-outline-secondary' : !isSelected, 'btn-secondary' : isSelected}"
+          class="btn"
+          @click="handlerClickSelect">Select
         </button>
       </div>
     </div>
@@ -33,6 +35,7 @@
 
 <script>
   import Big from "big.js";
+
   Big.DP = 10;
   Big.RM = 1;
 
@@ -51,6 +54,10 @@
         type: String,
         default: '',
       },
+      isSelected: { // поле выбрано
+        type: Boolean,
+        default: false,
+      },
     },
 
     data() {
@@ -59,7 +66,8 @@
 
     computed: {
       value() {
-        return Big(this.rate).mul(this.currentValue).round(8).toString();
+        let round = (this.title === 'BTC') ? 8 : 4;
+        return Big(this.rate).mul(this.currentValue).round(round).toString();
       }
     },
 
@@ -67,6 +75,14 @@
       handlerChangeInput(el) {
         let value = Big(el.target.value).div(this.rate).toString();
         this.$emit('change', value);
+      },
+
+      handlerClickSelect() {
+        if (!this.isSelected) {
+          this.$emit('select', this.title);
+        } else {
+          this.$emit('unselect', this.title);
+        }
       }
     }
 
