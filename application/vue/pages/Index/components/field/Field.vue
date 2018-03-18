@@ -4,12 +4,18 @@
     <div class="input-group mb-3">
       <input
         :value="value"
-        type="text"
+        type="number"
         class="form-control"
       >
       <div class="input-group-append">
         <span
-          class="input-group-text">{{ title }}</span>
+          class="input-group-text">{{ title }}
+        </span>
+      </div>
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary">Select
+        </button>
       </div>
     </div>
   </div>
@@ -17,6 +23,7 @@
 
 <style lang="scss">
   .field {
+    margin: 1rem 0;
     .input-group-text {
       min-width: 4rem;
     }
