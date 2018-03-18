@@ -6,6 +6,7 @@
         :value="value"
         type="number"
         class="form-control"
+        @change="handlerChangeInput"
       >
       <div class="input-group-append">
         <span
@@ -31,7 +32,9 @@
 </style>
 
 <script>
-  import bigInt from "big-integer";
+  import Big from "big.js";
+  Big.DP = 10;
+  Big.RM = 1;
 
   export default {
     components: {},
@@ -55,37 +58,17 @@
     },
 
     computed: {
-      // значение
       value() {
-        let rate = this.rate.replace('.', '');
-        let rateFloatLength = (this.rate.includes('.'))
-          ? this.rate.length - this.rate.indexOf('.') - 1 :
-          0;
-
-        let currentValue = this.currentValue.replace('.', '');
-        let currentValueFloatLength = (this.currentValue.includes('.'))
-          ? this.currentValue.length - this.currentValue.indexOf('.') - 1
-          : 0;
-
-        // todo if (value.isSmall){...}
-        let value = bigInt(rate).multiply(currentValue).toString();
-
-        // целое число
-        if (rateFloatLength + currentValueFloatLength === 0) {
-          return value;
-        }
-
-        let position = value.length - (rateFloatLength + currentValueFloatLength);
-
-        // целая часть нулевая
-        if (position <= 0) {
-          value = Array(-position + 1).fill(0).join('') + value; // добавляем нули в начало
-          position = 1;
-        }
-
-        return value.substr(0, position) + '.' + value.substr(position, value.length);
+        return Big(this.rate).mul(this.currentValue).round(8).toString();
       }
     },
+
+    methods: {
+      handlerChangeInput(el) {
+        let value = Big(el.target.value).div(this.rate).toString();
+        this.$emit('change', value);
+      }
+    }
 
   };
 </script>

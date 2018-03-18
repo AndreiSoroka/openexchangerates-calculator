@@ -8,6 +8,7 @@
       :rate="rate.toString()"
       :title="title"
       :current-value="currentValue.toString()"
+      @change="handlerChangeField"
     />
 
   </div>
@@ -24,15 +25,24 @@
   export default {
     components: {Field},
     data() {
-      return {};
+      return {
+        currentValue: '1'
+      };
     },
 
     computed: {
       ...mapState({
-        currentValue: s => s.currentValue,
-        base: s => s.base,
+        // currentValue: s => s.currentValue,
+        // base: s => s.base,
         rates: s => s.rates,
       })
     },
+
+    methods: {
+      handlerChangeField(value) {
+        this.currentValue = value;
+
+      }
+    }
   };
 </script>
