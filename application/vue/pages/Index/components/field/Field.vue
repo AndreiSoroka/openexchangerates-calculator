@@ -36,9 +36,6 @@
 <script>
   import Big from "big.js";
 
-  Big.DP = 10;
-  Big.RM = 1;
-
   export default {
     components: {},
     props: {

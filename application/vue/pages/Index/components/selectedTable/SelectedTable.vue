@@ -91,7 +91,7 @@
         return this.selectedRates.map(title => {
           return {
             title,
-            value: Big(this.rates[title]).mul(this.currentValue).round(15).toString()
+            value: Big(this.rates[title]).mul(this.currentValue).round(10).toString()
           };
         });
       }

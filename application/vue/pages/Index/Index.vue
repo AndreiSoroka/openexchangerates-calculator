@@ -7,7 +7,6 @@
       :current-value="currentValue.toString()"
       :selected-rates="selectedRates"
     />
-    <div>{{ selectedRates }}</div>
 
     <div>
       <field
