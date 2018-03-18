@@ -3,10 +3,11 @@
     <h4>Калькулятор криптовалют</h4>
 
     <field
-      v-for="(value, title) in rates"
+      v-for="(rate, title) in rates"
       :key="title"
-      :value="value.toString()"
+      :rate="rate.toString()"
       :title="title"
+      :current-value="currentValue.toString()"
     />
 
   </div>
@@ -28,7 +29,9 @@
 
     computed: {
       ...mapState({
-        rates: s => s.rates
+        currentValue: s => s.currentValue,
+        base: s => s.base,
+        rates: s => s.rates,
       })
     },
   };
