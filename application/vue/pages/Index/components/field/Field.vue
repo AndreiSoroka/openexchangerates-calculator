@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="field">
 
     <div class="input-group mb-3">
       <input
@@ -9,7 +9,6 @@
       >
       <div class="input-group-append">
         <span
-          id="basic-addon2"
           class="input-group-text">{{ title }}</span>
       </div>
     </div>
@@ -17,7 +16,11 @@
 </template>
 
 <style lang="scss">
-
+  .field {
+    .input-group-text {
+      min-width: 4rem;
+    }
+  }
 </style>
 
 <script>
@@ -60,9 +63,20 @@
         // todo if (value.isSmall){...}
         let value = bigInt(rate).multiply(currentValue).toString();
 
-        let a = value.length - (rateFloatLength + currentValueFloatLength);
+        // целое число
+        if (rateFloatLength + currentValueFloatLength === 0) {
+          return value;
+        }
 
-        return value.substr(0, a) + '.' + value.substr(a, value.length);
+        let position = value.length - (rateFloatLength + currentValueFloatLength);
+
+        // целая часть нулевая
+        if (position <= 0) {
+          value = Array(-position + 1).fill(0).join('') + value; // добавляем нули в начало
+          position = 1;
+        }
+
+        return value.substr(0, position) + '.' + value.substr(position, value.length);
       }
     },
 
