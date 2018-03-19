@@ -34,20 +34,14 @@
 </style>
 
 <script>
-  import Big from "big.js";
-
   export default {
     components: {},
     props: {
-      rate: {        // значение
+      value: {        // значение
         type: String,
         default: '',
       },
       title: {        // валюта
-        type: String,
-        default: '',
-      },
-      currentValue: { // относительная единица
         type: String,
         default: '',
       },
@@ -61,17 +55,12 @@
       return {};
     },
 
-    computed: {
-      value() {
-        let round = (this.title === 'BTC') ? 8 : 4;
-        return Big(this.rate).mul(this.currentValue).round(round).toString();
-      }
-    },
-
     methods: {
       handlerChangeInput(el) {
-        let value = Big(el.target.value).div(this.rate).toString();
-        this.$emit('change', value);
+        this.$emit('change', {
+          value: el.target.value,
+          title: this.title
+        });
       },
 
       handlerClickSelect() {

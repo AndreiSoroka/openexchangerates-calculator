@@ -1,20 +1,21 @@
 <template>
   <div class="index-page">
     <h4>Калькулятор криптовалют</h4>
+    <p>Расчет относительно: {{ base }}</p>
+    <p>Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})</p>
 
     <selected-table
-      :rates="rates"
+      :rates="currentRates"
       :current-value="currentValue.toString()"
       :selected-rates="selectedRates"
     />
 
     <div>
       <field
-        v-for="(rate, title) in rates"
+        v-for="(value, title) in currentRates"
         :key="title"
-        :rate="rate.toString()"
+        :value="value.toString()"
         :title="title"
-        :current-value="currentValue.toString()"
         :is-selected="selectedRates.includes(title)"
         @change="handlerChangeField"
         @select="handlerSelect"
@@ -37,6 +38,8 @@
   import {mapState} from 'vuex';
   import Field from './components/field/Field.vue';
   import SelectedTable from './components/selectedTable/SelectedTable.vue';
+  import Big from "big.js";
+  import moment from "moment";
 
   export default {
     components: {Field, SelectedTable},
@@ -48,16 +51,34 @@
     },
 
     computed: {
+      currentRates() {
+        let rates = Object.assign({}, this.rates);
+        for (let key in rates) {
+          let round = (key === 'BTC') ? 8 : 4;
+          rates[key] = Big(this.rates[key]).mul(this.currentValue).round(round).toString();
+        }
+
+        return rates;
+      },
+
+      updateDate() {
+        let date = moment(this.timestamp * 1000);
+        return {
+          format: date.format('DD MMMM YYYY H:mm:ss'),
+          fromNow: date.fromNow()
+        };
+      },
+
       ...mapState({
-        // currentValue: s => s.currentValue,
-        // base: s => s.base,
+        timestamp: s => s.timestamp,
+        base: s => s.base,
         rates: s => s.rates,
       })
     },
 
     methods: {
-      handlerChangeField(value) {
-        this.currentValue = value;
+      handlerChangeField({value, title}) {
+        this.currentValue = Big(value).div(this.rates[title]).toString();
       },
 
       handlerSelect(id) {

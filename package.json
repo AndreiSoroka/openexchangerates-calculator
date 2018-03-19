@@ -55,6 +55,7 @@
     "express": "^4.16.3",
     "install": "^0.10.4",
     "lodash": "^4.17.4",
+    "moment": "^2.21.0",
     "normalize.css": "^8.0.0",
     "npm": "^5.7.1",
     "reqwest": "^2.0.5",

@@ -11,7 +11,7 @@
 
       <tr
         v-for="(d,index) in data"
-        :key="title+index">
+        :key="d.title+index">
         <th class="row">{{ index + 1 }}</th>
         <td>{{ d.title }}</td>
         <td>{{ d.value }}</td>
@@ -27,11 +27,11 @@
     bottom: 0.3rem;
     z-index: 100;
     width: 700px;
-    opacity: 0.3;
+    opacity: 0.9;
     overflow: hidden;
     border-radius: 0.3rem;
 
-    &:hover{
+    &:hover {
       opacity: 0.95;
     }
 
@@ -62,21 +62,15 @@
 </style>
 
 <script>
-  import Big from "big.js";
-
   export default {
     components: {},
     props: {
-      rates: {        // значение
+      rates: {        // значения всех валют
         type: Object,
         default: () => {
         },
       },
-      currentValue: {        // валюта
-        type: String,
-        default: '',
-      },
-      selectedRates: { // относительная единица
+      selectedRates: { // выбранные валюты
         type: Array,
         default: () => [],
       },
@@ -91,26 +85,10 @@
         return this.selectedRates.map(title => {
           return {
             title,
-            value: Big(this.rates[title]).mul(this.currentValue).round(10).toString()
+            value: this.rates[title]
           };
         });
       }
     },
-
-    methods: {
-      handlerChangeInput(el) {
-        let value = Big(el.target.value).div(this.rate).toString();
-        this.$emit('change', value);
-      },
-
-      handlerClickSelect() {
-        if (!this.isSelected) {
-          this.$emit('select', this.title);
-        } else {
-          this.$emit('unselect', this.title);
-        }
-      }
-    }
-
   };
 </script>
