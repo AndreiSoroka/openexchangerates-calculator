@@ -1,5 +1,5 @@
-const express  = require('express');
-const path  = require('path');
+const express = require('express');
+const path = require('path');
 const configApp = require('./config');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -11,9 +11,12 @@ const app = express();
 const host = process.env.HOST || configServer.host;
 const port = process.env.PORT || configServer.port;
 
+const getDataApi = require('./server/api/getData');
+
 app.set('port', port);
 
 app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/api/getData', getDataApi);
 app.use('*', express.static(path.join(__dirname, 'public')));
 
 app.listen(port, host);

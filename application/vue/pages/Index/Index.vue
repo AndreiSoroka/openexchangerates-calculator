@@ -2,7 +2,14 @@
   <div class="index-page">
     <h4>Калькулятор криптовалют</h4>
     <p>Расчет относительно: {{ base }}</p>
-    <p>Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})</p>
+    <p>
+      Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})
+      <button
+        class="btn btn-outline-success btn-sm"
+        @click="handlerUpdateDataServer"
+      >Обновить
+      </button>
+    </p>
 
     <selected-table
       :rates="currentRates"
@@ -35,7 +42,7 @@
 </style>
 
 <script>
-  import {mapState} from 'vuex';
+  import {mapState, mapActions} from 'vuex';
   import Field from './components/field/Field.vue';
   import SelectedTable from './components/selectedTable/SelectedTable.vue';
   import Big from "big.js";
@@ -76,6 +83,10 @@
       })
     },
 
+    created() {
+      this.getDataServer();
+    },
+
     methods: {
       handlerChangeField({value, title}) {
         this.currentValue = Big(value).div(this.rates[title]).toString();
@@ -95,6 +106,14 @@
           return this.selectedRates.splice(positionId, 1);
         }
       },
+
+      handlerUpdateDataServer() {
+        this.getDataServer();
+      },
+
+      ...mapActions({
+        getDataServer: 'getData'
+      })
     }
   };
 </script>

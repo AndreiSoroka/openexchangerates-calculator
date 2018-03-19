@@ -10,11 +10,14 @@
     "options": {
       "disableHostCheck": false,
       "hot": true,
-      "compress": false
+      "compress": false,
+      "proxy": {
+        "/api": "http://localhost:3001"
+      }
     }
   },
   "expressServer": {
     "host": "localhost",
-    "port": 8060
+    "port": 3001
   }
 }
