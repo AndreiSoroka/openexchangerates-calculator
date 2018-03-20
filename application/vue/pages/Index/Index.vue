@@ -15,12 +15,14 @@
       :rates="currentRates"
       :current-value="currentValue.toString()"
       :selected-rates="selectedRates"
+      @unselect="handlerUnselect"
     />
 
     <div>
       <field
         v-for="(value, title) in currentRates"
         :key="title"
+        :id="title"
         :value="value.toString()"
         :title="title"
         :is-selected="selectedRates.includes(title)"

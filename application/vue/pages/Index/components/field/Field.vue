@@ -69,7 +69,7 @@
         } else {
           this.$emit('unselect', this.title);
         }
-      }
+      },
     }
 
   };

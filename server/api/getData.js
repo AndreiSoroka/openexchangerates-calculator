@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const Storage = require('node-storage');
 const store = new Storage(__dirname + '/_store.json');
-
+const KEY = process.env.KEY;
 
 let storageData = store.get('dataServer');
 
@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
     data = storageData;
     data['isStorage'] = true;
   } else {
-    let request = await fetch('https://openexchangerates.org/api/latest.json?app_id=b9c8712c109e43b592f548116204da71');
+    let request = await fetch('https://openexchangerates.org/api/latest.json?app_id=' + KEY);
     data = await request.json();
     storageData = data;
     store.put('dataServer', Object.assign({}, data));

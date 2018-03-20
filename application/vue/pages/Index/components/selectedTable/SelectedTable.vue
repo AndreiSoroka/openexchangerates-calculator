@@ -7,6 +7,7 @@
         <th scope="col">#</th>
         <th scope="col">Title</th>
         <th scope="col">Value</th>
+        <th scope="col">Actions</th>
       </tr>
 
       <tr
@@ -15,6 +16,15 @@
         <th class="row">{{ index + 1 }}</th>
         <td>{{ d.title }}</td>
         <td>{{ d.value }}</td>
+        <td>
+          <a
+            v-smooth-scroll
+            :href="'#'+d.title"
+            class="selected-table__action">Перейти</a>
+          <span
+            class="selected-table__action"
+            @click="handlerClickRemove(d.title)">Удалить</span>
+        </td>
       </tr>
     </table>
 
@@ -59,6 +69,17 @@
       width: 270px;
     }
   }
+
+  .selected-table__action {
+    cursor: pointer;
+    color: #fff;
+    margin: 0 1rem 0 0;
+
+    &:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
 </style>
 
 <script>
@@ -88,7 +109,12 @@
             value: this.rates[title]
           };
         });
-      }
+      },
+    },
+    methods: {
+      handlerClickRemove(title) {
+        this.$emit('unselect', title);
+      },
     },
   };
 </script>
