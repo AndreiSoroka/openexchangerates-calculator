@@ -1,15 +1,23 @@
 <template>
   <div class="index-page">
     <h4>Калькулятор криптовалют</h4>
-    <p>Расчет относительно: {{ base }}</p>
-    <p>
+    <div>Расчет относительно: {{ base }}</div>
+    <div v-if="license">Лицензия: <a
+      :href="license"
+      target="_blank"
+    >{{ license }}</a></div>
+
+    <div class="index-page__update">
       Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})
       <button
-        class="btn btn-outline-success btn-sm"
+        class="btn btn-outline-success btn-sm index-page__update-button"
         @click="handlerUpdateDataServer"
       >Обновить
       </button>
-    </p>
+      (максимум 1 раз в час)
+    </div>
+
+    <filters v-model="filter"/>
 
     <selected-table
       :rates="currentRates"
@@ -19,8 +27,10 @@
     />
 
     <div>
+      <div v-if="!filterRates.length && !filter">Данные не загружены</div>
+      <div v-else-if="!filterRates.length">По фильтрам ничего не найдено</div>
       <field
-        v-for="(value, title) in currentRates"
+        v-for="({value, title}) in filterRates"
         :key="title"
         :id="title"
         :value="value.toString()"
@@ -41,21 +51,30 @@
   .index-page__footer {
     height: 180px;
   }
+  .index-page__update {
+    margin: 1rem 0;
+  }
+
+  .index-page__update-button {
+    margin: 0 1rem;
+  }
 </style>
 
 <script>
   import {mapState, mapActions} from 'vuex';
   import Field from './components/field/Field.vue';
+  import Filters from './components/filters/Filters.vue';
   import SelectedTable from './components/selectedTable/SelectedTable.vue';
   import Big from "big.js";
   import moment from "moment";
 
   export default {
-    components: {Field, SelectedTable},
+    components: {Field, SelectedTable, Filters},
     data() {
       return {
         currentValue: '1',
-        selectedRates: []
+        selectedRates: [],
+        filter: ''
       };
     },
 
@@ -70,6 +89,12 @@
         return rates;
       },
 
+      filterRates() {
+        return Object.keys(this.currentRates)
+          .filter(title => title.includes(this.filter.toUpperCase()))
+          .map(title => ({title, value: this.currentRates[title]}));
+
+      },
       updateDate() {
         let date = moment(this.timestamp * 1000);
         return {
@@ -79,6 +104,7 @@
       },
 
       ...mapState({
+        license: s => s.license,
         timestamp: s => s.timestamp,
         base: s => s.base,
         rates: s => s.rates,
