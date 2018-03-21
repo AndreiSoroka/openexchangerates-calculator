@@ -1,13 +1,13 @@
 <template>
   <div class="index-page">
-    <h4>Калькулятор криптовалют</h4>
-    <div v-if="base">Расчет относительно: {{ base }}</div>
-    <div>Исходный код:
+    <h4>Crypto-currency calculator</h4>
+    <div v-if="base">Calculation relative to: {{ base }}</div>
+    <div>Source code:
       <a
         href="https://github.com/AndreiSoroka/openexchangerates-calculator"
         target="_blank">AndreiSoroka/openexchangerates-calculator</a>
     </div>
-    <div v-if="license">Лицензия:
+    <div v-if="license">License:
       <a
         :href="license"
         target="_blank"
@@ -15,13 +15,25 @@
     </div>
 
     <div class="index-page__update">
-      Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})
+      Last updated: {{ updateDate.format }} ({{ updateDate.fromNow }})
       <button
         class="btn btn-outline-success btn-sm index-page__update-button"
         @click="handlerUpdateDataServer"
       >Обновить
       </button>
-      (максимум 1 раз в час)
+      (maximum 1 time per hour)
+
+      <div
+        v-if="error"
+        class="alert alert-danger">
+        <span v-if="error.name==='NOT_GET_DATA'">
+          Could not get data from the server
+          <a
+            href="https://openexchangerates.org/"
+            target="_blank">openexchangerates.org</a>
+        </span>
+        <span v-else>{{ error.name }}</span>
+      </div>
     </div>
 
     <filters v-model="filter"/>
@@ -34,8 +46,8 @@
     />
 
     <div>
-      <div v-if="!filterRates.length && !filter">Данные не загружены</div>
-      <div v-else-if="!filterRates.length">По фильтрам ничего не найдено</div>
+      <div v-if="!filterRates.length && !filter">Data not loaded</div>
+      <div v-else-if="!filterRates.length">Nothing was found for the specified filters.</div>
       <field
         v-for="({value, title}) in filterRates"
         :key="title"
@@ -75,6 +87,9 @@
   import SelectedTable from './components/selectedTable/SelectedTable.vue';
   import Big from "big.js";
   import moment from "moment";
+
+  Big.DP = 300;
+  Big.PE = 1000;
 
   export default {
     components: {Field, SelectedTable, Filters},
@@ -116,6 +131,7 @@
         timestamp: s => s.timestamp,
         base: s => s.base,
         rates: s => s.rates,
+        error: s => s.error,
       })
     },
 

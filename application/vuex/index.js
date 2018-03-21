@@ -9,15 +9,17 @@ const state = {
   "license": "",
   "timestamp": 1521392406,
   "base": "",
-  "rates": {}
+  "rates": {},
+  "error": null,
 };
 const mutations = {
-  SET_DATA(state, {disclaimer, license, timestamp, base, rates}) {
+  SET_DATA(state, {disclaimer = '', license = '', timestamp, base = '', rates = {}, error = null}) {
     state.disclaimer = disclaimer;
     state.license = license;
     state.timestamp = timestamp;
     state.base = base;
     state.rates = rates;
+    state.error = error;
   }
 };
 

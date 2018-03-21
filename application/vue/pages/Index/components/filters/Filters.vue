@@ -3,7 +3,7 @@
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span
-          class="input-group-text">Фильтр:
+          class="input-group-text">Filter:
         </span>
       </div>
       <input
@@ -16,7 +16,7 @@
       <div class="input-group-append">
         <button
           class="btn btn-outline-secondary"
-          @click="handlerClearValue">Очистить
+          @click="handlerClearValue">Clear
         </button>
       </div>
     </div>

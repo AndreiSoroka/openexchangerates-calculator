@@ -20,10 +20,10 @@
           <a
             v-smooth-scroll
             :href="'#'+d.title"
-            class="selected-table__action">Перейти</a>
+            class="selected-table__action">Go to</a>
           <span
             class="selected-table__action"
-            @click="handlerClickRemove(d.title)">Удалить</span>
+            @click="handlerClickRemove(d.title)">Remove</span>
         </td>
       </tr>
     </table>

@@ -12,11 +12,18 @@ module.exports = async function (req, res) {
     data = storageData;
     data['isStorage'] = true;
   } else {
-    let request = await fetch('https://openexchangerates.org/api/latest.json?app_id=' + KEY);
-    data = await request.json();
-    storageData = data;
-    store.put('dataServer', Object.assign({}, data));
-    data['isStorage'] = false;
+    try {
+      let request = await fetch('https://openexchangerates.org/api/latest.json?app_id=' + KEY);
+      data = await request.json();
+      storageData = data;
+      store.put('dataServer', Object.assign({}, data));
+      data['isStorage'] = false;
+    } catch (e) {
+      console.error(e);
+      data = storageData;
+      data['isStorage'] = true;
+      data['error'] = {name: "NOT_GET_DATA"};
+    }
   }
 
   res.send(JSON.stringify(data));

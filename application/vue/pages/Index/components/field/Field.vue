@@ -6,7 +6,7 @@
         :value="value"
         type="number"
         class="form-control"
-        @change="handlerChangeInput"
+        @input="handlerChangeInput"
       >
       <div class="input-group-append">
         <span
@@ -57,10 +57,14 @@
 
     methods: {
       handlerChangeInput(el) {
-        this.$emit('change', {
-          value: el.target.value,
-          title: this.title
-        });
+        let value = el.target.value;
+
+        if (value) {
+          this.$emit('change', {
+            value,
+            title: this.title
+          });
+        }
       },
 
       handlerClickSelect() {
