@@ -1,11 +1,18 @@
 <template>
   <div class="index-page">
     <h4>Калькулятор криптовалют</h4>
-    <div>Расчет относительно: {{ base }}</div>
-    <div v-if="license">Лицензия: <a
-      :href="license"
-      target="_blank"
-    >{{ license }}</a></div>
+    <div v-if="base">Расчет относительно: {{ base }}</div>
+    <div>Исходный код:
+      <a
+        href="https://github.com/AndreiSoroka/openexchangerates-calculator"
+        target="_blank">AndreiSoroka/openexchangerates-calculator</a>
+    </div>
+    <div v-if="license">Лицензия:
+      <a
+        :href="license"
+        target="_blank"
+      >{{ license }}</a>
+    </div>
 
     <div class="index-page__update">
       Последнее обновление: {{ updateDate.format }} ({{ updateDate.fromNow }})
@@ -51,6 +58,7 @@
   .index-page__footer {
     height: 180px;
   }
+
   .index-page__update {
     margin: 1rem 0;
   }
