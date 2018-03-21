@@ -20,15 +20,21 @@ const mutations = {
     state.base = base;
     state.rates = rates;
     state.error = error;
+  },
+
+  SET_STATUS_LOADING(state,status) {
+    state.isLoading = status;
   }
 };
 
 const actions = {
   async getData({commit}) {
+    commit('SET_STATUS_LOADING', true);
     let getData = await fetch('/api/getData');
     let data = await getData.json();
 
     commit('SET_DATA', data);
+    commit('SET_STATUS_LOADING', false);
   }
 };
 

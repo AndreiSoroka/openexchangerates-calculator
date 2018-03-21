@@ -17,9 +17,15 @@
     <div class="index-page__update">
       Last updated: {{ updateDate.format }} ({{ updateDate.fromNow }})
       <button
+        v-if="isLoading"
+        class="btn btn-secondary btn-sm index-page__update-button"
+      >Loading
+      </button>
+      <button
+        v-else
         class="btn btn-outline-success btn-sm index-page__update-button"
         @click="handlerUpdateDataServer"
-      >Обновить
+      >Update
       </button>
       (maximum 1 time per hour)
 
@@ -46,7 +52,8 @@
     />
 
     <div>
-      <div v-if="!filterRates.length && !filter">Data not loaded</div>
+      <div v-if="!filterRates.length && isLoading">Loading...</div>
+      <div v-else-if="!filterRates.length && !filter">Data not loaded</div>
       <div v-else-if="!filterRates.length">Nothing was found for the specified filters.</div>
       <field
         v-for="({value, title}) in filterRates"
@@ -76,7 +83,8 @@
   }
 
   .index-page__update-button {
-    margin: 0 1rem;
+    margin: 0 0.5rem;
+    min-width: 5rem;
   }
 </style>
 
@@ -132,6 +140,7 @@
         base: s => s.base,
         rates: s => s.rates,
         error: s => s.error,
+        isLoading: s => s.isLoading,
       })
     },
 
