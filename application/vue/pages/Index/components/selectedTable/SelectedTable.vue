@@ -20,7 +20,8 @@
           <a
             v-smooth-scroll
             :href="'#'+d.title"
-            class="selected-table__action">Go to</a>
+            class="selected-table__action"
+            @mousedown="handlerClearFilters">Go to</a>
           <span
             class="selected-table__action"
             @click="handlerClickRemove(d.title)">Remove</span>
@@ -114,6 +115,10 @@
     methods: {
       handlerClickRemove(title) {
         this.$emit('unselect', title);
+      },
+
+      handlerClearFilters() {
+        this.$emit('clearFilters', true);
       },
     },
   };

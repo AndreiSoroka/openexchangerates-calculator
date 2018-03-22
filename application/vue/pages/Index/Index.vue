@@ -49,6 +49,7 @@
       :current-value="currentValue.toString()"
       :selected-rates="selectedRates"
       @unselect="handlerUnselect"
+      @clearFilters="filter=''"
     />
 
     <div>
